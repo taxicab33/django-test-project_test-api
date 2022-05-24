@@ -1,0 +1,152 @@
+{% extends 'newsapp/base.html'%}
+{%load static%}
+
+{% block content %}
+	<!-- JavaScript Slider -->
+	{%if week_popular_articles|length != 0 %}
+	{%if last_week != None %}
+	<h1 class="mb-4">Лучшее за прошедшую неделю</h1>
+	{%else%}
+	<h1 class="mb-4">Лучшее за неделю</h1>
+	{%endif%}
+	<div>
+		<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+		  <div class="carousel-indicators">
+			  {% for item in week_popular_articles %}
+				  {% if item == week_popular_articles.0 %}
+					<button type="button" data-bs-target="#carouselExampleCaptions"
+							data-bs-slide-to="{{forloop.counter|add:-1}}" class="active"
+							aria-current="true" aria-label="Slide {{forloop.counter|add:-1}}">
+					</button>
+				  {% elif item != week_popular_articles.0 %}
+					<button type="button" data-bs-target="#carouselExampleCaptions"
+							data-bs-slide-to="{{forloop.counter|add:-1}}"
+							aria-label="Slide {{forloop.counter|add:-1}}">
+					</button>
+				  {% endif %}
+			  {% endfor %}
+		  </div>
+		  <div class="carousel-inner">
+			{% for item in week_popular_articles %}
+			  {% if item == week_popular_articles.0 %}
+				<div class="carousel-item active">
+					<a href="{{item.get_absolute_url}}">
+						<img src="{{ item.photo.url }}" class="d-block w-100" alt="{{item.name}}">
+					</a>
+				  <div class="carousel-caption d-none d-md-block">
+					<h5>{{item.title}}</h5>
+					<p>{{item.content|truncatewords:8}}</p>
+				  </div>
+				</div>
+			  {% elif item != week_popular_articles.0 %}
+				<div class="carousel-item">
+					<a href="{{item.get_absolute_url}}">
+						<img src="{{item.photo.url}}" class="d-block w-100" alt="{{item.name}}">
+					</a>
+				  <div class="carousel-caption d-none d-md-block">
+					<h5>{{item.title}}</h5>
+					<p>{{item.content|truncatewords:8}}</p>
+				  </div>
+				</div>
+			  {% endif %}
+			 {% endfor %}
+		  </div>
+		  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+				  data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden"></span>
+		  </button>
+		  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+				  data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden"></span>
+		  </button>
+		</div>
+	</div>
+	<hr>
+	{%endif%}
+	<!-- Main information and Menu -->
+	<div class="row">
+		{% if new_articles|length == 0 %}
+		<div class="col-12 articles">
+			{% for item in articles|dictsortreversed:"views"%}
+				<div class="card mb-3">
+					<a href="{{ item.get_absolute_url }}">
+						<img src="{{item.photo.url}}" class="card-img-top" alt="{{item.title}}">
+					</a>
+					<div class="card-body">
+						<h5 class="card-title">{{item.title}}</h5>
+						<p class="card-text">{{item.content|truncatewords:35}}</p>
+						<p class="card-text">
+							<small class="text-muted">
+								{{item.time_create|date:"d M Y"}} в {{item.time_create.time|date:"H:i"}}
+								| Автор: <a href="{{item.user.userprofile.get_absolute_url}}">{{item.user.username}}</a>
+								| Тема: <a href="{{item.cat.get_absolute_url}}">{{item.cat.name}}</a>
+								| Просмотры: {{item.views}}
+								| Рейтинг: {{item.get_rating}}
+							</small>
+						</p>
+						<div class="rom">
+						<a class="btn btn-secondary" href="{{ item.get_absolute_url }}" type="submit">Читать статью</a>
+						{% if request.user.is_authenticated %}
+							<a class="btn btn-secondary" data-action="favorite" data-id="{{item.pk}}" data-type="Article">
+								{% if item.in_user_favorites %}
+								Убрать из избранного
+								{%else%}
+								Добавить в избранное
+								{%endif%}
+							</a>
+						{% endif %}
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		<div class="col-9 articles">
+			<h2 class="mb-3">Популярное</h2>
+			{% for item in articles|dictsortreversed:"views"%}
+				<div class="card mb-3">
+					<a href="{{ item.get_absolute_url }}">
+						<img src="{{item.photo.url}}" class="card-img-top" alt="{{item.title}}">
+					</a>
+					<div class="card-body">
+						<h5 class="card-title">{{item.title }}</h5>
+						<p class="card-text">{{item.content|truncatewords:35}}</p>
+						<p class="card-text">
+							<small class="text-muted">
+								{{item.time_create|date:"d M Y"}} в {{item.time_create.time|date:"H:i"}}
+								| Автор: <a href="{{item.user.userprofile.get_absolute_url}}">{{item.user.username}}</a>
+								| Тема: <a href="{{item.cat.get_absolute_url}}">{{item.cat.name}}</a>
+								| Просмотры: {{item.views}}
+							</small>
+						</p>
+						<a class="btn btn-secondary" href="{{ item.get_absolute_url }}" type="submit">Читать статью</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="col-3 menu">
+			<h2>Новости за сегодня</h2>
+			{% for item in new_articles %}
+				<div class="card mb-3">
+				  <a href="{{item.get_absolute_url}}">
+					  <img src="{{item.photo.url}}" class="card-img-top" alt="{{item.name}}">
+				  </a>
+				  <div class="card-body">
+					<h5 class="card-title">{{item.title}}</h5>
+					<p class="card-text">
+						<small class="text-muted">
+							{{item.time_create|date:"d M Y"}} в {{item.time_create.time|date:"H:i"}}
+							<img class="views-image" src="{% static 'newsapp/images/views.png' %}" alt="">
+							{{item.views}}
+						</small>
+					</p>
+					<a href="{{item.get_absolute_url}}" class="btn btn-secondary" type="submit">Читать статью</a>
+				  </div>
+				</div>
+			{% endfor %}
+		</div>
+		{%endif%}
+	</div>
+{% endblock %}

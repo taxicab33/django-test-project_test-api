@@ -1,0 +1,107 @@
+function create_answer_edit_form(parent, comment_text, comment_id){
+    var form = document.createElement("form");
+    form.setAttribute("id", "comment-form-" + comment_id);
+    form.setAttribute("data-comment_id", json.comment_id);
+    form.classList.add("d-none");
+
+    var input_group = document.createElement("div");
+    input_group.setAttribute("class", "input-group");
+
+    var textarea = document.createElement("textarea");
+    textarea.setAttribute("data-text", "comment_edit_answer_text");
+    textarea.setAttribute("class", "form-control");
+    textarea.setAttribute("placeholder", "Введите комментарий");
+    textarea.setAttribute("rows", "3");
+    textarea.innerText = comment_text;
+    input_group.appendChild(textarea);
+	
+    var btn_group = document.createElement("div");
+    btn_group.setAttribute("class", "column");
+    
+    var submit_btn = document.createElement("button");
+    submit_btn.setAttribute("class", "btn btn-secondary comment-btn mb-2");
+    submit_btn.setAttribute("type", "submit");
+    submit_btn.innerText = "Сохранить";
+
+    var submit_btn = document.createElement("button");
+    submit_btn.setAttribute("class", "btn btn-secondary comment-btn mb-2");
+    submit_btn.setAttribute("type", "submit");
+    submit_btn.innerText = "Сохранить";
+
+    form.appendChild(input_group);
+    form.appendChild(submit_btn);
+    parent.appendChild(form);
+}
+
+function show_edit_answer_form(){
+    var comment;
+    var action = $(this).data('action');
+    if(action == "edit_comment"){
+        comment = $(this).closest('.dropdown-menu');
+    }
+    else comment = $(this);
+    var comment_id = comment.data('comment_id');
+    var object_id = comment.data('object_id');
+    var comment_text = document.getElementById(comment_id);
+    var comment_form = document.getElementById("comment-form-" + comment_id);
+    comment_form.setAttribute("data-action", action);
+    var textarea = comment_form.querySelector(".form-control");
+    comment_form.classList.remove("d-none");
+    var form_btn = comment_form.querySelector('.btn');
+    if (action == "edit_comment"){
+        form_btn.innerText = "Сохранить";
+        comment_form.classList.add("edit-comment-form");
+    }
+}
+
+function show_edit_answer_form(){
+    var comment;
+    var action = $(this).data('action');
+    if(action == "edit_comment"){
+        comment = $(this).closest('.dropdown-menu');
+    }
+    else comment = $(this);
+    var comment_id = comment.data('comment_id');
+    var object_id = comment.data('object_id');
+    var form_btn = comment_form.querySelector('.btn');
+    if (action == "edit_comment"){
+        form_btn.innerText = "Сохранить";
+        comment_form.classList.add("edit-comment-form");
+    }
+
+    var form = document.createElement("form");
+    comment_form.setAttribute("id", "comment-form-" + comment_id);
+    comment_form.setAttribute("class", "mb-3");
+    comment_form.setAttribute("data-action", action);
+    comment_form.setAttribute("data-type", "Comment");
+    comment_form.setAttribute("data-id", comment_id);
+
+    var input_group = document.createElement("div");
+    input_group.setAttribute("class", "input-group");
+
+    var btn_group = document.createElement("div");
+    btn_group.setAttribute("class", "column");
+
+    var textarea = document.createElement("textarea");
+    textarea.setAttribute("class", "form-control");
+    textarea.setAttribute("placeholder", "Введите комментарий");
+    textarea.setAttribute("rows", "3");
+    textarea.innerText = comment_text;
+    input_group.appendChild(textarea);
+
+    var submit_btn = document.createElement("button");
+    submit_btn.setAttribute("class", "btn btn-secondary mb-2");
+    submit_btn.setAttribute("type", "submit");
+    submit_btn.innerText = "Сохранить";
+    
+    var cancel_btn = document.createElement("button");
+    cancel_btn.setAttribute("class", "btn btn-secondary mb-2");
+    cancel_btn.setAttribute("type", "cancel");
+    cancel_btn.innerText = "Сохранить";
+    
+    form.appendChild(input_group);
+    btn_group.appendChild(submit_btn);
+    btn_group.appendChild(cancel_btn);
+    parent.appendChild(form);
+
+}
