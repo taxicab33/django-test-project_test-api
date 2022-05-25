@@ -1,49 +1,55 @@
+from email._header_value_parser import Section
+
 from django.contrib.auth import logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DetailView, ListView, CreateView
 from .forms import *
 from .models import *
 from .utils import DataMixin
 
 
-class NewsHome(DataMixin, ListView):
+class ArticlesListView(DataMixin, ListView):
     model = Article
     template_name = 'newsapp/main.html'
     context_object_name = 'articles'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Главная страница')
-        return dict(list(context.items()) + list(c_def.items()))
+        context['title'] = "Главная страница"
+        context = self.get_user_context(context)
+        return context
 
     def get_queryset(self):
-        return Article.objects.filter(is_published=True).select_related('user', 'cat', 'user__userprofile')
+        articles = self.get_sorted_articles()
+        return articles
 
 
-class ShowCategories(DataMixin, ListView):
+class ArticlesCategoryListView(DataMixin, ListView):
     model = Article
     template_name = 'newsapp/main.html'
     context_object_name = 'articles'
     allow_empty = False
 
-    def get_queryset(self, **kwargs):
-        return Article.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True)\
-            .select_related('user', 'cat', 'user__userprofile')
+    def get_queryset(self):
+        articles = self.get_sorted_articles(cat_slug=self.kwargs['cat_slug'])
+        return articles
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c = Category.objects.get(slug=self.kwargs['cat_slug'])
-        c_def = self.get_user_context(title='Тема - ' + c.name)
-        sorted_articles = self.get_sorted_articles(articles=context['articles'])
-        return dict(list(c_def.items()) + list(sorted_articles.items()))
+        # получаем выбранную категорию
+        context['category'] = Category.objects.get(slug=self.kwargs['cat_slug'])
+        context = self.get_user_context(context)
+        # получаем категории
+        return context
 
 
-class ShowArticle(DetailView, DataMixin):
+class ArticleDetailView(DetailView, DataMixin):
     model = Article
     template_name = 'newsapp/article.html'
     slug_url_kwarg = 'article_slug'
@@ -51,12 +57,11 @@ class ShowArticle(DetailView, DataMixin):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['object'].title)
-        self.update_views(context['article'])
-        return dict(list(context.items()) + list(c_def.items()))
+        context = self.get_user_context(context)
+        return context
 
     def get_object(self):
-        return self.model.objects.select_related('user', 'cat', 'user__userprofile')\
+        return Article.objects.select_related('user', 'cat', 'user__userprofile')\
             .prefetch_related('comments', 'comments__parent', 'comments__user__userprofile')\
             .get(slug=self.kwargs['article_slug'])
 
@@ -72,8 +77,9 @@ class CreateArticle(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Добавление статьи')
-        return dict(list(context.items()) + list(c_def.items()))
+        context['title'] = "Добавление статьи"
+        context = self.get_user_context(context)
+        return context
 
 
 

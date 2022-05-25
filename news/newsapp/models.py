@@ -59,7 +59,7 @@ class Article(models.Model):
     class Meta:
         verbose_name = "Статьи"
         verbose_name_plural = "Статьи"
-        ordering = ['-views']
+        ordering = ['-time_create']
 
 
 class Category(models.Model):

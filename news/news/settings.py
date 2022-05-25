@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'favorites.apps.FavoritesConfig',
     'django_cleanup',
     'debug_toolbar',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -82,13 +83,23 @@ WSGI_APPLICATION = 'news.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'django_news_db',
+        'USER': 'postgres',
+        'PASSWORD': '54rutyb12',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -139,14 +150,6 @@ AUTH_USER_MODEL = 'auth.User'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-# email
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'djangonewsappmail@gmail.com'
-EMAIL_HOST_PASSWORD = '#~B}?BrC~RIkeX}buE#3cj*tg'
-EMAIL_USE_TLS = False
-EMAIL_USER_SSL = True
 
 CACHES = {
     'default': {

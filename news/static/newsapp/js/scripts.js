@@ -478,9 +478,31 @@ function delete_comment(){
     return false;
 }
 
+function update_favorite_btn(json, obj){
+    if(json.result == true){
+        obj.text("Убрать из избранного")
+    }
+    else{
+        obj.text("Добавить в избранное")
+    }
+}
+
 function favorite(){
     var obj = $(this)
-    alert(obj.data('object_id'))
+
+     $.ajax({
+    url : 'favorite',
+    method : 'POST',
+    data : { 'id' : obj.data('id'),
+             'type': obj.data('type')},
+    success : function(json){
+        update_favorite_btn(json, obj)
+    },
+    error: function(json){
+        return false
+    }
+    });
+    return false;
 }
 
 // Подключение обработчиков
@@ -491,8 +513,8 @@ $(function() {
     $('body').on('submit', '.edit-comment-form', edit_comment);
     $('body').on('submit', '.answer-comment-form', add_comment);
     $('body').on('click', '[data-action="edit_comment"]', show_edit_answer_form);
-    $('body').on('click', '[data-action="favorite"]', favorite);
     $('body').on('click', '.answer-btn', show_edit_answer_form);
+    $('body').on('click', '[data-action="favorite"]', favorite);
     $('body').on('click', '[data-action="delete_comment"]', delete_comment);
     $('body').on('click', '[data-action="cancel_form"]', cancel_form);
 });
