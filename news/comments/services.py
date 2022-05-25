@@ -30,7 +30,8 @@ def comment_action(request):
                 comment = obj.comments.create(user_id=request.user.pk,
                                               text=request.POST['comment_text'],
                                               object_id=obj.id)
-            json_dict['author_img'] = request.user.userprofile.avatar.url
+            if request.user.userprofile.avatar:
+                json_dict['author_img'] = request.user.userprofile.avatar.url
             json_dict['author_url'] = request.user.userprofile.get_absolute_url()
             json_dict['author_username'] = request.user.username
             json_dict['article_slug'] = obj.slug

@@ -3,123 +3,22 @@
 
 {% block content %}
 
-    <div class="user-profile row">
-
-        <div class="col-3">
-            {% if required_user.userprofile.avatar %}
-                <img src="{{required_user.userprofile.avatar.url}}" alt="">
-            {% else %}
-                <img src="{% static 'newsapp/images/no-profile-photo.png' %}" alt="">
-            {% endif %}
-			{%if request.user == required_user %}
-			<a class="btn btn-secondary mt-3 w-100" href="{{required_user.userprofile.get_absolute_url}}update"
-			   type="submit">Редактировать профиль</a>
-        	{% endif %}
-		</div>
-        <div class="col-9">
-            <h1>{{required_user.username}}</h1>
-            <p>Написанных статей - {{required_user_articles.count}}</p>
-            <p>Рейтинг - {{required_user.userprofile.rating}}</p>
-            <p>Комментариев - </p>
-            <p>Соцсети</p>
-        </div>
-    <div class="col-12 mt-3">
-        <h2>{{required_user.userprofile.title}}</h2>
-		<p>{{required_user.userprofile.description}}</p>
-    </div>
-    </div>
+	<!--  Карточка профиля пользователя	-->
+    {% include 'account/user_info.html'%}
     <hr>
     <div class="row">
-		{%if required_user_new_articles|length != 0%}
-		<div class="col-9 articles">
-			{%if required_user_articles|length != 0%}
-			<h2 class="mb-3">Популярные статьи {{required_user.username}}</h2>
-			{% for item in required_user_articles %}
-				<div class="card mb-3">
-					<a href="{{ item.get_absolute_url }}">
-						<img src="{{item.photo.url}}" class="card-img-top" alt="{{item.title}}">
-					</a>
-					<div class="card-body">
-						<h5 class="card-title">{{item.title}}</h5>
-						<p class="card-text">{{item.content|truncatewords:35}}</p>
-						<p class="card-text">
-							<small class="text-muted">
-								{{item.time_create|date:"d M Y"}} в {{item.time_create.time|date:"H:i"}}
-								| Тема: <a href="{{item.cat.get_absolute_url}}">{{item.cat.name}}</a> | Просмотры: {{item.views}}
-							</small>
-						</p>
-						<div class="column">
-							<a class="btn btn-secondary float-start" href="{{ item.get_absolute_url }}" type="submit">Читать статью</a>
-					    </div>
-                    </div>
-				</div>
-			{% endfor %}
-			{%else%}
-				{%if request.user == required_user%}
-					<h2>Вы не добавили ни одной статьи :(</h2>
-				{%else%}
-					<h2>{{required_user.username}} не добавил ни одной статьи :(</h2>
-				{%endif%}
-			{%endif%}
-		</div>
-		<div class="col-3 menu">
-			{% if required_user_new_articles.0.user == required_user %}
-				<h2>Новые статьи автора</h2>
-			{%else%}
-				<h2>Новое за сегодня</h2>
-			{%endif%}
-			{% for item in required_user_new_articles %}
-				<div class="card mb-3">
-				  <a href="{{item.get_absolute_url}}">
-					  <img src="{{item.photo.url}}" class="card-img-top" alt="{{item.name}}">
-				  </a>
-				  <div class="card-body">
-					<h5 class="card-title">{{item.title}}</h5>
-					<p class="card-text">
-						<small class="text-muted">
-							{{item.time_create|date:"d M Y"}} в {{item.time_create.time|date:"H:i"}}
-							<img class="views-image" src="{% static 'newsapp/images/views.png' %}" alt="">
-							{{item.views}}
-						</small>
-					</p>
-					<a href="{{item.get_absolute_url}}" class="btn btn-secondary" type="submit">Читать статью</a>
-				  </div>
-				</div>
-			{% endfor %}
-		</div>
-		{%else%}
 		<div class="col-12 articles">
-			{%if required_user_articles|length != 0%}
-			<h1>Популярные статьи {{required_user.username}}</h1>
-			{% for item in required_user_articles %}
-				<div class="card mb-3">
-					<a href="{{ item.get_absolute_url }}">
-						<img src="{{item.photo.url}}" class="card-img-top" alt="{{item.title}}">
-					</a>
-					<div class="card-body">
-						<h5 class="card-title">{{item.title}}</h5>
-						<p class="card-text">{{item.content|truncatewords:35}}</p>
-						<p class="card-text">
-							<small class="text-muted">
-								{{item.time_create|date:"d M Y"}} в {{item.time_create.time|date:"H:i"}}
-								| Тема: <a href="{{item.cat.get_absolute_url}}">{{item.cat.name}}</a> | Просмотры: {{item.views}}
-							</small>
-						</p>
-						<div class="column">
-							<a class="btn btn-secondary float-start" href="{{ item.get_absolute_url }}" type="submit">Читать статью</a>
-					    </div>
-                    </div>
-				</div>
-			{% endfor %}
+			{%if articles|length != 0%}
+			<!--  Общий шаблон выведения статей	-->
+			{% include 'newsapp/common_articles_list.html'%}
 			{%else%}
-				{%if request.user == required_user%}
+				{%if request.user == userprofile.user %}
 					<h2>Вы не добавили ни одной статьи :(</h2>
 				{%else%}
-					<h2>{{required_user.username}} не добавил ни одной статьи :(</h2>
+					<h2>{{userprofile.username}} не добавил ни одной статьи :(</h2>
 				{%endif%}
 			{%endif%}
 		</div>
-		{%endif%}
 	</div>
 
 {% endblock %}

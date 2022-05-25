@@ -1,0 +1,9 @@
+
+<!--                {% if item.photo %}-->
+<!--                <img src="{{item.photo.url}}" class="card-img-top" alt="{{item.title}}">-->
+<!--                {%else%}-->
+<!--                <img src="{% static 'newsapp/images/gitara_bas_gitara_struny_106722_1920x1080.jpg' %}" class="card-img-top" alt="{{item.title}}">-->
+<!--                {%endif%} -->
+
+
+<img src="{{article.photo.url}}" class="card-img-top article-img" alt="...">

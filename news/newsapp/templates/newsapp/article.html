@@ -7,7 +7,6 @@
 			{% block content %}
   				<div class="mb-3">
 				    <h2 class="card-title">{{article.title}}</h2>
-				  	<img src="{{article.photo.url}}" class="card-img-top article-img" alt="...">
 				    <p class="card-text">{{article.content|linebreaks}}</p>
 				    <p class="card-text"><small class="text-muted">
 						{{article.time_create|date:"d M Y"}} в {{article.time_create.time|date:"H:i"}}

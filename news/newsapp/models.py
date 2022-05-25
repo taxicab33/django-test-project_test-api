@@ -20,7 +20,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name="Заголовок")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name="Текст статьи")
-    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Изображение")
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Изображение", null=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создание")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
@@ -34,6 +34,7 @@ class Article(models.Model):
 
     votes = GenericRelation(LikeDislike, related_query_name='article_likes')
     comments = GenericRelation(Comment, related_query_name='article_comments')
+    is_user_favorite = bool
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -52,14 +53,14 @@ class Article(models.Model):
     def in_user_favorites(self):
         if Favorite.objects.get(object_id=self.pk, content_type=ContentType.objects.get_for_model(self),
                                 user=get_current_user()) is not None:
-            return True
+            self.is_user_favorite = True
         else:
-            return False
+            self.is_user_favorite = False
 
     class Meta:
         verbose_name = "Статьи"
         verbose_name_plural = "Статьи"
-        ordering = ['-views']
+        ordering = ['-time_create']
 
 
 class Category(models.Model):

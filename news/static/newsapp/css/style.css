@@ -27,17 +27,6 @@ a{
 a:hover{
 	color: black;
 }
-.page-history a{
-	color: #808080;
-	font-weight: 400;
-}
-.page-history p span{
-	color: #585858;
-	font-weight: 700;
-}
-.page-history {
-	margin: 16px 20% 32px 20%;
-}
 .btn{
 	background-color: #212529;
 	border: none;
@@ -174,4 +163,8 @@ form_hr {
 	 cursor: pointer;
 	 display: inline;
 	 margin-right: 20px;
+}
+.pagination__list{
+    display: inline;
+
 }

@@ -8,6 +8,9 @@ main{
 	margin: 0px 20% 100px 20%;
 	padding: 64px;
 	background-color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 nav {
 	padding: 0 20% 0 20%;
@@ -26,17 +29,6 @@ a{
 }
 a:hover{
 	color: black;
-}
-.page-history a{
-	color: #808080;
-	font-weight: 400;
-}
-.page-history p span{
-	color: #585858;
-	font-weight: 700;
-}
-.page-history {
-	margin: 16px 20% 32px 20%;
 }
 .btn{
 	background-color: #212529;

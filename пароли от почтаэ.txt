@@ -1,2 +1,0 @@
-Электронная почта: DjangoNewsAppMail@gmail.com
-Пароль для django emailer :#~B}?BrC~RIkeX}buE#3cj*tg
