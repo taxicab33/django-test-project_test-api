@@ -19,8 +19,7 @@ class NewsHome(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Главная страница')
-        sorted_articles = self.get_sorted_articles(articles=context['articles'])
-        return dict(list(context.items()) + list(c_def.items()) + list(sorted_articles.items()))
+        return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
         return Article.objects.filter(is_published=True).select_related('user', 'cat', 'user__userprofile')

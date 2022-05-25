@@ -31,6 +31,7 @@ def change_vote(obj, vote_type):
         obj.likes += 1
         if obj.dislikes > 0:
             obj.dislikes -= 1
+    obj.rating = obj.likes - obj.dislikes
     obj.save()
 
 
@@ -39,6 +40,7 @@ def add_vote(obj, vote_type):
         obj.dislikes += 1
     else:
         obj.likes += 1
+    obj.rating = obj.likes - obj.dislikes
     obj.save()
 
 

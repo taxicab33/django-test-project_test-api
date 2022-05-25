@@ -8,7 +8,7 @@ from .models import Article, Category
 
 class DataMixin:
     max_new_articles = 8
-    # paginate_by = max_new_articles
+    paginate_by = max_new_articles
     current_datetime = datetime.now()
     week = current_datetime.strftime("%V")
 
@@ -24,12 +24,6 @@ class DataMixin:
         # лучшее за неделю
         kwargs['week_popular_articles'] = Article.objects.filter(time_create__week=self.week).order_by(
             '-views', '-time_create').select_related('user', 'cat', 'user__userprofile')[:self.max_new_articles]
-        
-        # если на этой неделе не добавили ни одной статьи
-        if len(kwargs['week_popular_articles']) == 0:
-            kwargs['week_popular_articles'] = Article.objects.filter(time_create__week=str(int(self.week)-1)).order_by(
-                '-views', '-time_create').select_related('user', 'cat', 'user__userprofile')[:self.max_new_articles]
-            kwargs['last_week'] = int(self.week)-1
         return kwargs
 
     def get_user_articles(self, **kwargs):
@@ -61,3 +55,4 @@ class DataMixin:
     def update_views(self, article):
         article.views += 1
         article.save()
+

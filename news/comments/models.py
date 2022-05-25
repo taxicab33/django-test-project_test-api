@@ -10,7 +10,6 @@ class Comment(models.Model):
     text = models.TextField(blank=True, verbose_name="Текст комментария")
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
     votes = GenericRelation(LikeDislike, related_query_name='comments')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создание")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
@@ -19,5 +18,6 @@ class Comment(models.Model):
     )
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
     class Meta:
         ordering = ['-time_create']

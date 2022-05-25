@@ -30,6 +30,7 @@ class Article(models.Model):
     views = models.IntegerField(default=0)  # в следующий раз сделать отдельным классов выше
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
 
     votes = GenericRelation(LikeDislike, related_query_name='article_likes')
     comments = GenericRelation(Comment, related_query_name='article_comments')
