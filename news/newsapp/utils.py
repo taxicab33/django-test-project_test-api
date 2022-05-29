@@ -56,7 +56,7 @@ class DataMixin:
         # получаем статьи пользователя
         elif 'user' in kwargs.keys():
             url = self.request.path
-            user = User.objects.get(pk=kwargs['user'].pk)
+            user = kwargs['user']
             articles = self.get_user_own_articles(url=url, user=user, sort_list=sort_list)
         # получаем все статьи
         else:
