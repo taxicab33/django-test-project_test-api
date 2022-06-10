@@ -1,16 +1,17 @@
 import json
+from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
 from comments.models import Comment
-from newsapp.models import Article
+from newsapp.models import *
 
 
 def get_object(request):
-    model = globals().get(request.POST['type'])
+    model = ContentType.objects.get(model=request.POST['content_type'])
+    print(request.POST)
     try:
-        obj = model.objects.get(pk=int(request.POST['obj_id']))  # Получаем экземпляр по id
-    except ValueError:
-        obj = model.objects.get(slug=request.POST['obj_id'])  # Получаем экземпляр по slug
-
+        obj = model.get_object_for_this_type(slug=request.POST['object_id'])  # Получаем экземпляр по slug
+    except:
+        obj = model.get_object_for_this_type(pk=int(request.POST['object_id']))  # Получаем экземпляр по id
     return obj
 
 
@@ -20,12 +21,14 @@ def comment_action(request):
 
     if request.user.is_authenticated:
         if request.POST['action'] == 'comment':
+            # если делается запрос для создания ответа на другой комментарий
             if request.POST['comment_id'] != '':
                 comment_parent = Comment.objects.get(pk=request.POST['comment_id'])
                 comment = obj.comments.create(user_id=request.user.pk,
                                               text=request.POST['comment_text'],
                                               object_id=obj.id,
                                               parent=comment_parent)
+            # создание нового комментария
             else:
                 comment = obj.comments.create(user_id=request.user.pk,
                                               text=request.POST['comment_text'],

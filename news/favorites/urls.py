@@ -5,4 +5,5 @@ urlpatterns = [
     path('favorite', favorite),
     path('article/<slug:article_slug>/favorite', favorite),
     path('user/<slug:user_slug>/favorite', favorite),
+    path('category/<slug:cat_slug>/favorite', favorite),
 ]

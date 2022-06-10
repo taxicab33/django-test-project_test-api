@@ -3,17 +3,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.views import View
+
+from comments.services import get_object
 from votes.models import LikeDislike
 from newsapp.models import Article  # Используется при запросе оценки поста, не удалять
 from comments.models import Comment  # Используется при запросе оценки комментария, не удалять
-from votes.services import get_vote_type, get_object, change_vote, delete_vote, add_vote
+from votes.services import get_vote_type, change_vote, delete_vote, add_vote
 
 
 class VotesView(View, LoginRequiredMixin):
     model = None  # Модель данных - Статьи или Комментарии
     vote_type = None  # Тип комментария Like/Dislike
 
-    def post(self, request, **kwargs):
+    def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             self.vote_type = get_vote_type(request)
             obj = get_object(request)

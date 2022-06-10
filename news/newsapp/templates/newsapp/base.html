@@ -71,13 +71,13 @@
 								</a>
 							</li>
 							<li>
-								<a class="dropdown-item" href="{% url 'logout'%}">Выйти</a>
+								<a class="dropdown-item" href="{% url 'logout_user'%}">Выйти</a>
 							</li>
 						</ul>
 					</li>
 					{% else %}
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'login'%}">Войти</a>
+						<a class="nav-link" href="{% url 'login_user'%}">Войти</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'register'%}">Регистрация</a>

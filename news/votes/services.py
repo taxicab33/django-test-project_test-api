@@ -2,16 +2,6 @@ from newsapp.models import Article  # Используется при запро
 from comments.models import Comment  # Используется при запросе оценки комментария, не удалять
 
 
-def get_object(request):
-    model = globals().get(request.POST['type'])
-    try:
-        obj = model.objects.get(pk=int(request.POST['id']))  # Получаем экземпляр по id
-    except ValueError:
-        obj = model.objects.get(slug=request.POST['id'])  # Получаем экземпляр по slug
-
-    return obj
-
-
 def delete_vote(obj, vote_type):
     if vote_type == -1:
         if obj.dislikes > 0:

@@ -1,4 +1,5 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -25,8 +26,10 @@ class UserProfile(models.Model):
     @receiver(post_save, sender=User)
     def create_user_or_update_profile(sender, instance, created, **kwargs):
         if created:
-            instance.profile = UserProfile.objects.create(user=instance, slug=gen_user_slug(instance.username))
-            instance.profile.save()
+            instance.userprofile = UserProfile.objects.create(user=instance, slug=gen_user_slug(instance.username))
+            instance.userprofile.save()
 
     def get_absolute_url(self):
         return reverse('user', kwargs={'user_slug': self.slug})
+
+

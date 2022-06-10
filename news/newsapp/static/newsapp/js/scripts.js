@@ -402,8 +402,8 @@ function add_comment(){
         $.ajax({
             url : 'comment',
             method : 'POST',
-            data : {'obj_id': obj_id,
-                    'type': 'Article',
+            data : {'object_id': obj_id,
+                    'content_type': 'article',
                     'action': 'comment',
                     'comment_text': comment_text,
                     'comment_id' : comment_id},
@@ -432,8 +432,8 @@ function edit_comment(){
                 url : 'edit_comment',
                 method : 'POST',
                 data : { 'comment_id': comment_id,
-                         'obj_id' : obj_id,
-                         'type' : "Article",
+                         'object_id' : obj_id,
+                         'content_type' : "article",
                          'action': 'edit_comment',
                          'comment_text': comment_text},
                 success : function(json){
@@ -464,8 +464,8 @@ function delete_comment(){
     $.ajax({
     url : 'delete_comment',
     method : 'POST',
-    data : { 'obj_id' : article_id,
-             'type': 'Article',
+    data : { 'object_id' : article_id,
+             'content_type': 'article',
              'comment_id': comment_id,
              'action': 'delete_comment'},
     success : function(json){
@@ -493,8 +493,8 @@ function favorite(){
      $.ajax({
     url : 'favorite',
     method : 'POST',
-    data : { 'id' : obj.data('id'),
-             'type': obj.data('type')},
+    data : { 'object_id' : obj.data('id'),
+             'content_type': obj.data('type')},
     success : function(json){
         update_favorite_btn(json, obj)
     },

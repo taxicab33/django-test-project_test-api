@@ -14,17 +14,17 @@
                     	| Тема: <a href="{{article.cat.get_absolute_url}}">{{article.cat.name}}</a>
 						| Просмотры: {{article.views}}</small></p>
 				   <ul class="votes">
-						<li data-id="{{ article.slug }}" data-type="Article" data-action="like" title="Нравится">
+						<li data-id="{{ article.pk }}" data-type="Article" data-action="like" title="Нравится">
 							<span class="fa-regular fa-thumbs-up"></span>
 							<span data-count="like">{{ article.likes }}</span>
 						</li>
-						<li data-id="{{ article.slug }}" data-type="Article" data-action="dislike" title="Не нравится">
+						<li data-id="{{ article.pk }}" data-type="Article" data-action="dislike" title="Не нравится">
 							<span class="fa-regular fa-thumbs-down"></span>
 							<span data-count="dislike">{{ article.dislikes }}</span>
 						</li>
 
 					{% if request.user.is_authenticated %}
-						<a class="btn btn-secondary" data-action="favorite" data-id="{{article.pk}}" data-type="Article">
+						<a class="btn btn-secondary" data-action="favorite" data-id="{{article.pk}}" data-type="article">
 							{% if article.in_user_favorites %}
 							Убрать из избранного
 							{%else%}
@@ -40,7 +40,7 @@
 					{{ article.comments.count }} комментарий
 				</h5>
 
-  				<form id="comment_form" data-obj_id="{{article.slug}}">
+  				<form id="comment_form" data-obj_id="{{article.pk}}">
 	  				<div class="input-group">
 					  <textarea id="comment_text" placeholder="Введите комментарий" class="form-control"
 								rows="4"></textarea>
@@ -108,7 +108,7 @@
 									</li>
 								 </ul>
 							</div>
-							<form class="d-none mb-3" data-comment_id="{{comment.pk}}" data-obj_id="{{article.slug}}"
+							<form class="d-none mb-3" data-comment_id="{{comment.pk}}" data-obj_id="{{article.pk}}"
 								  id="comment-form-{{comment.pk}}">
 								<div class="input-group">
 								  <textarea placeholder="Введите ваш ответ" class="form-control"
@@ -185,7 +185,7 @@
 											 </ul>
 										</div>
 										<form class="d-none mb-3" data-comment_id="{{answer.pk}}"
-											  data-obj_id="{{article.slug}}" id="comment-form-{{answer.pk}}">
+											  data-obj_id="{{article.pk}}" id="comment-form-{{answer.pk}}">
 											<div class="input-group">
 											  <textarea placeholder="Введите ваш ответ" class="form-control"
 														rows="3"></textarea>

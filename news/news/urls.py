@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('comments.urls')),
     path('', include('favorites.urls')),
     path('admin/', admin.site.urls),
+    path('', include('api.urls')),
 ]
 
 if settings.DEBUG:

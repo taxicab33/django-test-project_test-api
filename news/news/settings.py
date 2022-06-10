@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'favorites.apps.FavoritesConfig',
     'django_cleanup',
     'debug_toolbar',
-    'django_filters'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser'
 ]
 
 MIDDLEWARE = [
@@ -161,4 +163,27 @@ CACHES = {
 
 def show_toolbar(request):
     return True
+
+
 SHOW_TOOLBAR_CALLBACK = show_toolbar
+
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_RENDERER_CLASSES': [
+    #     'rest_framework.renderers.JSONRenderer',
+    #     'rest_framework.renderers.BrowsableAPIRender'
+    # ],
+
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ]
+}
+

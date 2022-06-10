@@ -1,12 +1,15 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, ListView
-from account.utils import UserMixin
 from account.forms import *
 from account.models import UserProfile
+from account.utils import UserMixin
 from newsapp.models import Article
 from newsapp.utils import DataMixin
 
@@ -61,9 +64,15 @@ class ShowUserProfile(DataMixin, ListView):
         return articles
 
 
-@login_required
-def update_user_info(request, **kwargs):
-    UserMixin.update_user_info(request)
+class UpdateUserInfo(View, UserMixin, LoginRequiredMixin):
+
+    def post(self, *args, **kwargs):
+        context = self.save_user_forms()
+        userprofile = context['userprofile']
+        return HttpResponseRedirect(userprofile.get_absolute_url())
+
+    def get(self, *args, **kwargs):
+        return self.get_user_forms()
 
 
 @login_required
