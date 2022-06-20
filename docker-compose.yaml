@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+
+  servis_db:
+    image: postgres
+    container_name: servis_db
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=django_news_db
+
+  news:
+    restart: always
+    build:
+      context: ./maindir
+    command: bash -c "python ./news/manage.py migrate && python ./news/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/usr/src/news
+    ports:
+      - "8000:8000"
+    depends_on:
+      - servis_db

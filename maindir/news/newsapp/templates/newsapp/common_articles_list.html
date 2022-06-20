@@ -1,0 +1,12 @@
+
+
+<!--  Сортировка	-->
+{% if articles %}
+{% include 'newsapp/sort_form.html'%}
+{% endif %}
+<!--  Статьи	-->
+{% include 'newsapp/articles_list.html'%}
+<!--  Пагинация	-->
+{% if articles %}
+{% include 'newsapp/pagination.html'%}
+{% endif %}
