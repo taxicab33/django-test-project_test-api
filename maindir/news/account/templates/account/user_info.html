@@ -7,7 +7,7 @@
             <img src="{% static 'newsapp/images/no-profile-photo.png' %}" alt="">
         {% endif %}
         {%if request.user == userprofile.user %}
-        <a class="btn btn-secondary mt-3 w-100" href="{{userprofile.get_absolute_url}}update"
+        <a class="btn btn-secondary mt-3 w-100" href="{% url 'update_user_info' %}"
            type="submit">Редактировать профиль</a>
         {% endif %}
     </div>

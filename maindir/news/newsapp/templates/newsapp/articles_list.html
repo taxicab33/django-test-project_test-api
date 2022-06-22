@@ -5,7 +5,29 @@
             <a href="{{ item.get_absolute_url }}">
             </a>
             <div class="card-body">
-                <h5 class="card-title">{{item.title}}</h5>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{item.title}}</h5>
+                    </div>
+                    <div>
+                        <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                  data-bs-toggle="dropdown" aria-expanded="false">
+                            Действия
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            {%if request.user == item.user %}
+                            <li><a class="dropdown-item"
+                                   href="{{ item.get_absolute_url }}update_article">Редактировать</a></li>
+                            <li><a class="dropdown-item"
+                                   href="{{ item.get_absolute_url }}delete_article">Удалить</a></li>
+                            {%endif%}
+                            <li><a class="dropdown-item" href="#">Пожаловаться</a></li>
+                          </ul>
+                        </div>
+                    </div>
+                </div>
+
                 <p class="card-text">{{item.content|truncatewords:35}}</p>
                 <p class="card-text">
                     <small class="text-muted">

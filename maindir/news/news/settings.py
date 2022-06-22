@@ -87,8 +87,11 @@ WSGI_APPLICATION = 'news.wsgi.application'
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'django_news_db',
+#         'USER': 'postgres',
+#         'HOST': 'servis_db',
+#         'PORT': '5432'
 #     }
 # }
 
@@ -97,7 +100,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django_news_db',
         'USER': 'postgres',
-        'HOST': 'servis_db',
+        'HOST': 'localhost',
+        'PASSWORD': '54rutyb12',
         'PORT': '5432'
     }
 }
