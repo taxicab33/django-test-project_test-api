@@ -71,7 +71,7 @@ class DataMixin:
         user_profile = UserProfile.objects.get(user=user)
         values = {}
         articles = []
-        if f'/user/{user_profile.slug}/' not in url:
+        if f'/user/{user_profile.slug}/' in url:
             # если запрашиваем понравившиеся статьи пользователя
             if 'liked_articles' in url:
                 values = LikeDislike.objects.filter(user=user, content_type=ContentType.objects.get_for_model(Article))

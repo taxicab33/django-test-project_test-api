@@ -7,7 +7,6 @@ from newsapp.models import *
 
 def get_object(request):
     model = ContentType.objects.get(model=request.POST['content_type'])
-    print(request.POST)
     try:
         obj = model.get_object_for_this_type(slug=request.POST['object_id'])  # Получаем экземпляр по slug
     except:

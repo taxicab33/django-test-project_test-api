@@ -14,11 +14,11 @@
                     	| Тема: <a href="{{article.cat.get_absolute_url}}">{{article.cat.name}}</a>
 						| Просмотры: {{article.views}}</small></p>
 				   <ul class="votes">
-						<li data-id="{{ article.pk }}" data-type="Article" data-action="like" title="Нравится">
+						<li data-id="{{ article.pk }}" data-type="article" data-action="like" title="Нравится">
 							<span class="fa-regular fa-thumbs-up"></span>
 							<span data-count="like">{{ article.likes }}</span>
 						</li>
-						<li data-id="{{ article.pk }}" data-type="Article" data-action="dislike" title="Не нравится">
+						<li data-id="{{ article.pk }}" data-type="article" data-action="dislike" title="Не нравится">
 							<span class="fa-regular fa-thumbs-down"></span>
 							<span data-count="dislike">{{ article.dislikes }}</span>
 						</li>
@@ -78,7 +78,7 @@
 							  <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
 									  aria-expanded="false">
 							  </button>
-							  <ul class="dropdown-menu" data-type="Comment"
+							  <ul class="dropdown-menu" data-type="comment"
 								  data-comment_id="{{comment.pk}}" data-object_id="{{article.slug}}"
 								  data-user="{{comment.user.pk}}">
 								{% if comment.user == request.user %}
@@ -96,12 +96,12 @@
 									Ответить
 								</p>
 								<ul class="votes">
-									<li data-id="{{ comment.id }}" data-type="Comment" data-action="like"
+									<li data-id="{{ comment.id }}" data-type="comment" data-action="like"
 										title="Нравится">
 										<span class="fa-regular fa-thumbs-up"></span>
 										<span data-count="like">{{ comment.likes }}</span>
 									</li>
-									<li data-id="{{ comment.id }}" data-type="Comment" data-action="dislike"
+									<li data-id="{{ comment.id }}" data-type="comment" data-action="dislike"
 										title="Не нравится">
 										<span class="fa-regular fa-thumbs-down"></span>
 										<span data-count="dislike">{{ comment.dislikes }}</span>
@@ -155,7 +155,7 @@
 												  data-bs-toggle="dropdown" aria-expanded="false">
 
 										  </button>
-										  <ul class="dropdown-menu" data-type="Comment" data-comment_id="{{answer.pk}}"
+										  <ul class="dropdown-menu" data-type="comment" data-comment_id="{{answer.pk}}"
 											  data-object_id="{{article.slug}}" data-user="{{answer.user.pk}}">
 											{% if answer.user == request.user %}
 											<li><a class="dropdown-item" data-action="edit_comment">
@@ -172,12 +172,12 @@
 										<p class="comment-text" id="comment-text-{{answer.id}}">{{answer.text}}</p>
 										<div class="comment-reactions">
 											<ul class="votes">
-												<li data-id="{{ answer.pk }}" data-type="Comment" data-action="like"
+												<li data-id="{{ answer.pk }}" data-type="comment" data-action="like"
 													title="Нравится">
 													<span class="fa-regular fa-thumbs-up"></span>
 													<span data-count="like">{{ answer.likes }}</span>
 												</li>
-												<li data-id="{{ answer.id }}" data-type="Comment" data-action="dislike"
+												<li data-id="{{ answer.id }}" data-type="comment" data-action="dislike"
 													title="Не нравится">
 													<span class="fa-regular fa-thumbs-down"></span>
 													<span data-count="dislike">{{ answer.dislikes }}</span>

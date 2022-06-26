@@ -22,20 +22,25 @@ $(function () {
     });
 });
 
-function like(){
+function vote(){
+    alert('fds')
     var like = $(this);
     var type = like.data('type');
     var id = like.data('id');
     var action = like.data('action');
-    var dislike = like.next();
+    if action == "dislike"{
+        var vote = like.prev();
+    }
+    else{
+        var vote = like.next();
+    }
 
     $.ajax({
         url : action,
         method : 'POST',
         data : { 'id' : id,
-                 'type': type,
+                 'content_type': type,
                  'vote_type': action},
-
         success : function (json) {
             like.find("[data-count='like']").text(json.like_count);
             dislike.find("[data-count='dislike']").text(json.dislike_count);
@@ -43,32 +48,6 @@ function like(){
         },
         error: function(json) {
            alert(json.result)
-        }
-    });
-
-    return false;
-}
-
-function dislike(){
-    var dislike = $(this);
-    var type = dislike.data('type');
-    var id = dislike.data('id');
-    var action = dislike.data('action');
-    var like = dislike.prev();
-
-    $.ajax({
-        url : action,
-        method : 'POST',
-        data : { 'id' : id,
-                 'type': type,
-                 'vote_type': action},
-        success : function (json) {
-            dislike.find("[data-count='dislike']").text(json.dislike_count);
-            like.find("[data-count='like']").text(json.like_count);
-            if (json.auth_error != null) alert(json.auth_error)
-        },
-        error: function(json) {
-           alert(json.auth_error)
         }
     });
 
@@ -402,8 +381,8 @@ function add_comment(){
         $.ajax({
             url : 'comment',
             method : 'POST',
-            data : {'obj_id': obj_id,
-                    'type': 'Article',
+            data : {'object_id': obj_id,
+                    'content_type': 'article',
                     'action': 'comment',
                     'comment_text': comment_text,
                     'comment_id' : comment_id},
@@ -432,8 +411,8 @@ function edit_comment(){
                 url : 'edit_comment',
                 method : 'POST',
                 data : { 'comment_id': comment_id,
-                         'obj_id' : obj_id,
-                         'type' : "Article",
+                         'object_id' : obj_id,
+                         'content_type' : "article",
                          'action': 'edit_comment',
                          'comment_text': comment_text},
                 success : function(json){
@@ -464,8 +443,8 @@ function delete_comment(){
     $.ajax({
     url : 'delete_comment',
     method : 'POST',
-    data : { 'obj_id' : article_id,
-             'type': 'Article',
+    data : { 'object_id' : article_id,
+             'content_type': 'article',
              'comment_id': comment_id,
              'action': 'delete_comment'},
     success : function(json){
@@ -493,8 +472,8 @@ function favorite(){
      $.ajax({
     url : 'favorite',
     method : 'POST',
-    data : { 'id' : obj.data('id'),
-             'type': obj.data('type')},
+    data : { 'object_id' : obj.data('id'),
+             'content_type': obj.data('type')},
     success : function(json){
         update_favorite_btn(json, obj)
     },
@@ -507,8 +486,8 @@ function favorite(){
 
 // Подключение обработчиков
 $(function() {
-    $('body').on('click', '[data-action="like"]', like);
-    $('body').on('click', '[data-action="dislike"]', dislike);
+    $('body').on('click', '[data-action="like"]', vote);
+    $('body').on('click', '[data-action="dislike"]', vote);
     $('#comment_form').submit(add_comment);
     $('body').on('submit', '.edit-comment-form', edit_comment);
     $('body').on('submit', '.answer-comment-form', add_comment);

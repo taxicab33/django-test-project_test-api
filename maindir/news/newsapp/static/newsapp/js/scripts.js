@@ -22,20 +22,30 @@ $(function () {
     });
 });
 
-function like(){
-    var like = $(this);
-    var type = like.data('type');
-    var id = like.data('id');
-    var action = like.data('action');
-    var dislike = like.next();
+function vote(){
+    var vote = $(this);
+    var content_type = vote.data('type');
+    var object_id = vote.data('id');
+    var vote_type = vote.data('action');
+
+    var like;
+    var dislike;
+
+    if (vote_type == "dislike"){
+        like = vote.prev()
+        dislike = vote
+    }
+    else{
+        dislike = vote.next()
+        like = vote
+    }
 
     $.ajax({
-        url : action,
+        url : vote_type,
         method : 'POST',
-        data : { 'id' : id,
-                 'type': type,
-                 'vote_type': action},
-
+        data : { 'object_id' : object_id,
+                 'content_type': content_type,
+                 'vote_type': vote_type},
         success : function (json) {
             like.find("[data-count='like']").text(json.like_count);
             dislike.find("[data-count='dislike']").text(json.dislike_count);
@@ -43,32 +53,6 @@ function like(){
         },
         error: function(json) {
            alert(json.result)
-        }
-    });
-
-    return false;
-}
-
-function dislike(){
-    var dislike = $(this);
-    var type = dislike.data('type');
-    var id = dislike.data('id');
-    var action = dislike.data('action');
-    var like = dislike.prev();
-
-    $.ajax({
-        url : action,
-        method : 'POST',
-        data : { 'id' : id,
-                 'type': type,
-                 'vote_type': action},
-        success : function (json) {
-            dislike.find("[data-count='dislike']").text(json.dislike_count);
-            like.find("[data-count='like']").text(json.like_count);
-            if (json.auth_error != null) alert(json.auth_error)
-        },
-        error: function(json) {
-           alert(json.auth_error)
         }
     });
 
@@ -129,7 +113,7 @@ function create_comment_menu_btn(parent, action){
 function create_vote_btn(action, comment_pk){
     var li = document.createElement("li");
     li.setAttribute("data-id", comment_pk);
-    li.setAttribute("data-type", "Comment");
+    li.setAttribute("data-type", "comment");
     li.setAttribute("data-action", action);
 
     var icon = document.createElement("span");
@@ -296,7 +280,7 @@ function add_comment_html(json){
 
     var ul = document.createElement("ul");
     ul.setAttribute("class", "dropdown-menu");
-    ul.setAttribute("data-type", "Comment");
+    ul.setAttribute("data-type", "comment");
     ul.setAttribute("data-comment_id", comment.pk);
     ul.setAttribute("data-object_id", comment.fields.object_id);
     ul.setAttribute("data-user", comment.fields.user);
@@ -320,7 +304,7 @@ function add_comment_html(json){
     if(comment.fields.parent == null){
     var answer_btn = document.createElement("p");
     answer_btn.setAttribute("class", "answer-btn");
-    answer_btn.setAttribute("data-type", "Comment");
+    answer_btn.setAttribute("data-type", "comment");
     answer_btn.setAttribute("data-comment_id", comment.pk);
     answer_btn.setAttribute("data-obj_id", comment.fields.object_id);
     answer_btn.setAttribute("data-action", "answer_comment");
@@ -507,8 +491,8 @@ function favorite(){
 
 // Подключение обработчиков
 $(function() {
-    $('body').on('click', '[data-action="like"]', like);
-    $('body').on('click', '[data-action="dislike"]', dislike);
+    $('body').on('click', '[data-action="like"]', vote);
+    $('body').on('click', '[data-action="dislike"]', vote);
     $('#comment_form').submit(add_comment);
     $('body').on('submit', '.edit-comment-form', edit_comment);
     $('body').on('submit', '.answer-comment-form', add_comment);
