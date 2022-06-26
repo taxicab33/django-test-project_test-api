@@ -13,7 +13,8 @@ services:
     restart: always
     build:
       context: ./maindir
-    command: bash -c "python ./news/manage.py migrate && python ./news/manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python ./news/manage.py migrate && python ./news/manage.py loaddata ./news/dump.json
+             && python ./news/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/usr/src/news
     ports:

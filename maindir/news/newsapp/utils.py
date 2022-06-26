@@ -11,6 +11,7 @@ class DataMixin:
     pagination_list = create_pagination_list()
     time_intervals_list = create_time_interval_list()
 
+    @classmethod
     def is_articles_in_user_favorites(self, articles):
         for item in articles:
             item.in_user_favorites()
@@ -78,16 +79,16 @@ class DataMixin:
             # если запрашиваем избранные статьи пользователя
             elif 'favorite_articles' in url:
                 values = Favorite.objects.filter(user=user, content_type=ContentType.objects.get_for_model(Article))
-            articles = Article.objects.filter(pk__in=values.values('object_id')).order_by(*sort_list).\
-                select_related('user', 'cat', 'user__userprofile')
-        # если запрашиваем статьи написанные пользователем
-        else:
-            if len(sort_list) > 0:
-                articles = Article.objects.filter(user=user).order_by(*sort_list).\
+                articles = Article.objects.filter(pk__in=values.values('object_id')).order_by(*sort_list).\
                     select_related('user', 'cat', 'user__userprofile')
             else:
-                articles = Article.objects.filter(user=user).order_by('-time_create'). \
-                    select_related('user', 'cat', 'user__userprofile')
+                if len(sort_list) > 0:
+                    articles = Article.objects.filter(user=user).order_by(*sort_list).\
+                        select_related('user', 'cat', 'user__userprofile')
+                else:
+                    articles = Article.objects.filter(user=user).order_by('-time_create'). \
+                        select_related('user', 'cat', 'user__userprofile')
+
         return articles
 
     def get_user(self):
